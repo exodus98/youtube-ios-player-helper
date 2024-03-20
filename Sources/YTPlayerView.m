@@ -84,12 +84,7 @@ NSString static *const kYTPlayerSyndicationRegexPattern = @"^https://tpc.googles
     playerVars = @{};
   }
     
-  // 기존 playerVars에 cc_load_policy를 추가하여 자막을 숨깁니다.
-  NSMutableDictionary *modifiedPlayerVars = [playerVars mutableCopy];
-  [modifiedPlayerVars setObject:@3 forKey:@"cc_load_policy"];
-  [modifiedPlayerVars setObject:@3 forKey:@"iv_load_policy"];
-    
-  NSDictionary *playerParams = @{ @"videoId" : videoId, @"playerVars" : modifiedPlayerVars };
+  NSDictionary *playerParams = @{ @"videoId" : videoId, @"playerVars" : playerVars };
   return [self loadWithPlayerParams:playerParams];
 }
 
@@ -951,19 +946,5 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
   return frameworkBundle;
 #endif
 }
-
-- (void)toggleCaptions {
-    [self evaluateJavaScript:@"if (player.getOption('captions', 'tracklist').length > 0) { var currentTrack = player.getOption('captions', 'track'); if (currentTrack) { player.setOption('captions', 'track', {}); } else { var trackList = player.getOption('captions', 'tracklist'); var englishTrack = trackList.find(function(track) { return track.languageCode === 'en'; }); if (englishTrack) { player.setOption('captions', 'track', englishTrack); } } }" completionHandler:nil];
-}
-
-- (void)checkCaptionsStateWithCompletionHandler:(void(^)(BOOL captionsEnabled))completionHandler {
-    [self evaluateJavaScript:@"(function() { var track = player.getOption('captions', 'track'); return track !== undefined && track !== null; })();" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-        if (completionHandler) {
-            completionHandler([result boolValue]);
-        }
-    }];
-}
-
-
 
 @end
