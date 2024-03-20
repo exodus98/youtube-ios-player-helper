@@ -86,7 +86,7 @@ NSString static *const kYTPlayerSyndicationRegexPattern = @"^https://tpc.googles
     
   // 기존 playerVars에 cc_load_policy를 추가하여 자막을 숨깁니다.
   NSMutableDictionary *modifiedPlayerVars = [playerVars mutableCopy];
-  [modifiedPlayerVars setObject:@0 forKey:@"cc_load_policy"];
+  [modifiedPlayerVars setObject:@3 forKey:@"cc_load_policy"];
     
   NSDictionary *playerParams = @{ @"videoId" : videoId, @"playerVars" : modifiedPlayerVars };
   return [self loadWithPlayerParams:playerParams];
